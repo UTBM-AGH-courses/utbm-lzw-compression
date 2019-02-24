@@ -12,3 +12,10 @@ The output.txt include :
 
 + [Thomas Martin](https://github.com/AppliNH)
 + [Valentin Reversat](https://github.com/vareversat)
+
+## Lauch
+
+```console
+> g++ -o main.out *.cpp
+> ./main.out
+```
