@@ -1,0 +1,5 @@
+size de début : 
+gain : 
+perte : 
+
+texte de sortie
