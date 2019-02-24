@@ -1,1 +1,4 @@
-slkdfjh
+output string : DU CODAGE A<259>DE<261><263><265> D'IMG<264>E<256>
+gain : 20
+loss : 80
+theorical size : 240
