@@ -1,17 +1,5 @@
-#include <map>
-#include <iostream>
-#include <string.h>
-#include <fstream>
-#include <vector>
 
-#define MAP_SIZE 4096
-#define CHAR_SIZE 8
-#define DICO_BLOCK_SIZE 12
-#define INPUT_FILE "input.txt"
-#define OUTPUT_FILE "output.txt"
-
-using namespace std;
-
+#include "LZW.hpp"
 
 void getTheDicoSize(ifstream & inputStream, int & dicoSize)
 {
@@ -19,38 +7,32 @@ void getTheDicoSize(ifstream & inputStream, int & dicoSize)
     {
         string sLine;
         getline(inputStream, sLine);
-        cout << "dico  size : " + sLine << endl;
         dicoSize = atoi(sLine.c_str());
     }
 }
 
-void printTheOutPutString(vector<string> & outputString, map<string, int> & lzw, int & gain, int & loss)
+void generateTheOutputFile(ofstream & outputStream, vector<string> & outputString, map<string, int> & lzw, int &gain, int &loss, int & inputLength)
 {
-    cout << "output string : ";
+    outputStream << "output string : ";
     for (auto const& x : outputString)
     {
-        if(x.size() > 1) {
-            cout << "<";
-            cout << lzw[x] ;
-            cout << ">";
-            gain += CHAR_SIZE*(x.size()) - DICO_BLOCK_SIZE;
+        if(x.size() > 1 && x.compare("eof") != 0) {
+            outputStream << "<";
+            outputStream << lzw[x] ;
+            outputStream << ">";
+            gain += (CHAR_SIZE*(x.size()) - DICO_BLOCK_SIZE);
         }
-        else {
-            cout << x ;
-            loss += DICO_BLOCK_SIZE - CHAR_SIZE;
+        else if(x.compare("eof") != 0)
+        {
+            outputStream << x ;
+            loss += (DICO_BLOCK_SIZE - CHAR_SIZE);
         }
     }
-    cout << endl;
-}
-
-
-void printTheDico(map<string, int> & lzw)
-{
-    cout << "dico : " << endl;
-    for(auto it = lzw.cbegin(); it != lzw.cend(); ++it)
-    {
-        std::cout << it->first << " : " << it->second << endl;
-    }
+    outputStream << "<" + to_string(lzw["eof"]) + ">";
+    outputStream << endl;
+    outputStream << "gain : " + to_string(gain) + "\n";
+    outputStream << "loss : " + to_string(loss) + "\n";
+    outputStream << "theorical size : " + to_string(inputLength) + "\n";
 }
 
 void addEOFCode(vector<string> & outputString, map<string, int> & lzw) 
@@ -68,6 +50,8 @@ int main()
     //dico size & ASCII code
     int dicoSize, asciiCode = 258;
     int gain = 0, loss = 0, inputLength = 0;
+    //char read from the output file
+    char c;
     //open the input file
     ifstream inputStream;
     inputStream.open(INPUT_FILE,ios_base::in);
@@ -75,9 +59,6 @@ int main()
     ofstream outputStream;
     outputStream.open(OUTPUT_FILE, ofstream::out | ofstream::trunc);
 
-
-    //char read from the output file
-    char c;
     //new entry for the dico & waiting code
     string p = "",  w = "";
     vector<string> outputString ;
@@ -85,7 +66,6 @@ int main()
     // get the dico size
     getTheDicoSize(inputStream, dicoSize);
     
-
     while (inputStream.get(c)) {
         p = w + c;
         auto it = lzw.find(p); 
@@ -105,14 +85,10 @@ int main()
     }      
 
     inputStream.close();
-
-    string test = "slkdfjh";
-    outputStream << test;
-
     outputString.push_back(w);
+
     addEOFCode(outputString, lzw);
-    printTheOutPutString(outputString, lzw, gain, loss);
-    printTheDico(lzw);
+    generateTheOutputFile(outputStream, outputString, lzw, gain, loss, inputLength);
 
     return 0;
 }
