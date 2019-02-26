@@ -1,4 +1,4 @@
-output string : DU CODAGE A<259>DE<261><263><265> D'IMG<264>E<256>
-gain : 20
-loss : 80
-theorical size : 240
+output string : test<258><260><262><264><259><265><260><259><256>
+gain : 80
+loss : 16
+theorical size : 208
