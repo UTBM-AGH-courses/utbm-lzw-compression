@@ -6,11 +6,11 @@
 #include <math.h>
 
 #define CHAR_SIZE 8
-#define INPUT_FILE "input.txt"
-#define OUTPUT_FILE "output.txt"
-#define EOF_CODE "256"
-#define EO_DICO_CODE "257"
-#define ASCII_STARTING_CODE 258
+#define INPUT_FILE "input.txt"          //  File you want to compress
+#define OUTPUT_FILE "output.txt"        //  Compressed file
+#define EOF_CODE "256"                  //  End Of File code
+#define EO_DICO_CODE "257"            
+#define ASCII_STARTING_CODE 258         //  Starting code for the dictionnary
 
 using namespace std;
 

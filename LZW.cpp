@@ -1,7 +1,7 @@
 
 #include "LZW.hpp"
 
-void getTheDicoSize(ifstream & inputStream, int & dicoSize)
+void getTheDicoSize(ifstream & inputStream, int & dicoSize)             //Get the size of the dictionnary
 {
     if (inputStream.good())
     {
@@ -13,13 +13,13 @@ void getTheDicoSize(ifstream & inputStream, int & dicoSize)
 
 void generateTheOutputFile(ofstream & outputStream, string & outputString, map<string, int> & lzw, int &gain, int &loss, int & inputLength, int & dicoSize)
 {
-    outputStream << "output string : " + outputString + "\n";
+    outputStream << "output string : " + outputString + "\n";                   //Write different info resulting from the compression on output.txt
     outputStream << "gain : " + to_string(gain) + "\n";
     outputStream << "loss : " + to_string(loss) + "\n";
     outputStream << "theorical size : " + to_string(inputLength) + "\n";
 }
 
-void concatNextBlock(const string & block, string & outputString, const int & dicoSize, int & gain, int & loss, map<string, int> & lzw)
+void concatNextBlock(const string & block, string & outputString, const int & dicoSize, int & gain, int & loss, map<string, int> & lzw) 
 {
     cout << block + to_string(block.size()) << endl;
     if(block.size() > 1) 
@@ -39,13 +39,15 @@ int main()
 {
     // init the dictionary
     map<string, int> lzw;
-    //dico size & ASCII code
+
+    //  dico size & ASCII code
     int dicoSize, asciiCode = ASCII_STARTING_CODE;
     int gain = 0, loss = 0, inputLength = 0;
 
-    //char read from the output file
+    //  char read from the output file
     char c;
-    //new entry for the dico & waiting code
+
+    //  new entry for the dico & waiting code
     string p = "",  w = "", outputString = "";
 
     //open the input file
@@ -58,33 +60,33 @@ int main()
     // get the dico size
     getTheDicoSize(inputStream, dicoSize);
     
-    while (inputStream.get(c)) {
-        if(lzw.size() == dicoSize)
+    while (inputStream.get(c)) {                    //  While there's still something to read
+        if(lzw.size() == dicoSize)                 //   For the first data we have to compress
         {
             lzw.clear();
             asciiCode = ASCII_STARTING_CODE;
             outputString += "<257>";
 
         }
-        p = w + c;
+        p = w + c;                                  
         auto it = lzw.find(p); 
         //if there is an existing entry for p in the dico
         if(!(it == lzw.end()) || p.size() <= 1) 
         {
             w = p;
         }
-        else 
+        else    
         {
             concatNextBlock(w, outputString, dicoSize, gain, loss, lzw);
             lzw[p] = asciiCode;
             w = c;    
-            asciiCode++;     
+            asciiCode++;            
         }
         inputLength += CHAR_SIZE;
     }      
     concatNextBlock(w, outputString, dicoSize, gain, loss, lzw);
-    inputStream.close();
-    outputString += "<256>";
+    inputStream.close();                                       
+    outputString += "<256>";                                    //  End Of File code
     generateTheOutputFile(outputStream, outputString, lzw, gain, loss, inputLength, dicoSize);
 
     return 0;
