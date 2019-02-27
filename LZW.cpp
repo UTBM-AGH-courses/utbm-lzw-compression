@@ -21,7 +21,6 @@ void generateTheOutputFile(ofstream & outputStream, string & outputString, map<s
 
 void concatNextBlock(const string & block, string & outputString, const int & dicoSize, int & gain, int & loss, map<string, int> & lzw) 
 {
-    cout << block + to_string(block.size()) << endl;
     if(block.size() > 1) 
     {
         outputString += "<" + to_string(lzw[block]) + ">";

@@ -1,4 +1,5 @@
-output string : test<258><260><262><264><259><265><260><259><256>
-gain : 80
-loss : 16
-theorical size : 208
+output string : TOBEORNOT<258><260><262><267><261><263><265>
+<256>
+gain : 36
+loss : 40
+theorical size : 200
