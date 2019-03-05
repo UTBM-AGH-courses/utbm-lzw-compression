@@ -1,5 +1,0 @@
-output string : TOBEORNOT<258><260><262><267><261><263><265>
-<256>
-gain : 36
-loss : 40
-theorical size : 200

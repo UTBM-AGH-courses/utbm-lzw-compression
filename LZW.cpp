@@ -81,7 +81,7 @@ int main()
             w = c;    
             asciiCode++;            
         }
-        inputLength += CHAR_SIZE;
+        inputLength += log2(dicoSize);
     }      
     concatNextBlock(w, outputString, dicoSize, gain, loss, lzw);
     inputStream.close();                                       
