@@ -14,7 +14,7 @@ The output.txt include :
 + [Valentin Reversat](https://github.com/vareversat)
 
 ## Lauch
-
+Before to lauch this command, make sure you installed g++
 ```console
 > g++ -o main.out *.cpp
 > ./main.out
